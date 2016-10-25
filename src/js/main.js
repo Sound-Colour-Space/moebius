@@ -15,8 +15,10 @@ animate();
 var mobiusStrip;
 
 function init() {
-  camera = new THREE.PerspectiveCamera( 35, 1.6, 500, 10000 );
+  camera = new THREE.PerspectiveCamera( 35, 1.6, 1, 10000 );
   camera.position.y = 1500;
+
+  doRotate = false;
 
   // controls
   controls = new THREE.OrbitControls( camera );
@@ -31,11 +33,11 @@ function init() {
   light.position.set( 30, 600, 0 );
   scene.add( light );
 
-  var map1 = THREE.ImageUtils.loadTexture( 'textures/test.jpg' );
+  var map1 = THREE.ImageUtils.loadTexture( 'textures/Moebius.jpg' );
   map1.wrapS = map1.wrapT = THREE.RepeatWrapping;
   map1.anisotropy = 16;
 
-  var map2 = THREE.ImageUtils.loadTexture( 'textures/text-back.jpg' );
+  var map2 = THREE.ImageUtils.loadTexture( 'textures/test.jpg' );
   map2.wrapS = map2.wrapT = THREE.RepeatWrapping;
   map2.anisotropy = 16;
 
@@ -44,8 +46,8 @@ function init() {
   map3.anisotropy = 16;
 
   materials = [
-    new THREE.MeshLambertMaterial( { ambient: 0xffffff, map: map1, side: THREE.BackSide } ),
-    new THREE.MeshLambertMaterial( { ambient: 0xffffff, map: map1, side: THREE.FrontSide} )
+  new THREE.MeshLambertMaterial( { ambient: 0xffffff, map: map1, side: THREE.BackSide } ),
+  new THREE.MeshLambertMaterial( { ambient: 0xffffff, map: map1, side: THREE.FrontSide} )
     //new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe: true, transparent: true, opacity: 0.6, side: THREE.FrontSide } ),
     //new THREE.MeshBasicMaterial( { color: 0x00ffff, wireframe: false, transparent: false, opacity: 0.6, side: THREE.DoubleSide } ),
     //new THREE.MeshBasicMaterial( { color: 0x0000ff, wireframe: true, transparent: true, opacity: 0.6, side: THREE.FrontSide } ),
@@ -73,12 +75,19 @@ function init() {
 
   document.body.appendChild( renderer.domElement );
 
+  /*
   stats = new Stats();
   stats.domElement.style.position = 'absolute';
   stats.domElement.style.top = '0px';
   document.body.appendChild( stats.domElement );
+  */
 
   window.addEventListener( 'resize', onWindowResize, false );
+
+  $(document).keydown(function(e){
+    if (e.keyCode==32)
+        doRotate = !doRotate;
+});
 
 }
 
@@ -96,8 +105,10 @@ function animate() {
 }
 
 function render() {
-    mobiusStrip.rotation.z = mobiusStrip.rotation.z + .004;
-    mobiusStrip.rotation.y = Math.sin($.now()/1000)/10;
+    if (doRotate) {
+        mobiusStrip.rotation.z = mobiusStrip.rotation.z + .004;
+        mobiusStrip.rotation.y = Math.sin($.now()/1000)/10;
+    }
     renderer.render( scene, camera );
 }
 

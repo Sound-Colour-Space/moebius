@@ -19,6 +19,8 @@ var babel        = require('gulp-babel');
 //var prod         = gutil.env.prod;
 var prod = false;
 
+var ghPages = require('gulp-gh-pages');
+
 var onError = function(err) {
   console.log(err.message);
   this.emit('end');
@@ -62,9 +64,9 @@ gulp.task('libs', function() {
     './src/js/vendor/stats.min.js',
     './src/js/vendor/UVsUtils.js'
     ])
-    .pipe(concat('libs.js'))
-    .pipe(gulp.dest('./build/js'));
-});
+   .pipe(concat('libs.js'))
+   .pipe(gulp.dest('./build/js'));
+   });
 
 // html
 gulp.task('html', function() {
@@ -90,17 +92,25 @@ gulp.task('sass', function() {
   .pipe(browserSync.stream());
   });
 
+
+// deploy to gh-pages
+gulp.task('deploy', function() {
+  return gulp.src('./build/**/*')
+    .pipe(ghPages());
+});
+
 // browser sync server for live reload
 gulp.task('serve', function() {
-  browserSync.init({
-    server: {
-      baseDir: './build'
-  }
-  });
-
-  gulp.watch('./src/templates/**/*', ['html']);
-  gulp.watch('./src/scss/**/*.scss', ['sass']);
-  });
+    browserSync.init({
+        server: {
+            baseDir: './build'
+        }
+    }
+    );
+    gulp.watch('./src/templates/**/*', ['html']);
+    gulp.watch('./src/scss/**/*.scss', ['sass']);
+}
+);
 
 // use gulp-sequence to finish building html, sass and js before first page load
 gulp.task('default', gulpSequence(['html', 'sass', 'libs', 'js'], 'serve'));
