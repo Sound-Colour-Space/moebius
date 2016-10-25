@@ -33,21 +33,17 @@ function init() {
   light.position.set( 30, 600, 0 );
   scene.add( light );
 
-  var map1 = THREE.ImageUtils.loadTexture( 'textures/Moebius.jpg' );
-  map1.wrapS = map1.wrapT = THREE.RepeatWrapping;
-  map1.anisotropy = 16;
+  var front = THREE.ImageUtils.loadTexture( 'textures/moebius_front.jpg' );
+  front.wrapS = front.wrapT = THREE.RepeatWrapping;
+  front.anisotropy = 16;
 
-  var map2 = THREE.ImageUtils.loadTexture( 'textures/test.jpg' );
-  map2.wrapS = map2.wrapT = THREE.RepeatWrapping;
-  map2.anisotropy = 16;
-
-  var map3 = THREE.ImageUtils.loadTexture( 'textures/ash_uvgrid01.jpg' );
-  map3.wrapS = map3.wrapT = THREE.RepeatWrapping;
-  map3.anisotropy = 16;
+  var back = THREE.ImageUtils.loadTexture( 'textures/moebius_back.jpg' );
+  back.wrapS = back.wrapT = THREE.RepeatWrapping;
+  back.anisotropy = 16;
 
   materials = [
-  new THREE.MeshLambertMaterial( { ambient: 0xffffff, map: map1, side: THREE.BackSide } ),
-  new THREE.MeshLambertMaterial( { ambient: 0xffffff, map: map1, side: THREE.FrontSide} )
+  new THREE.MeshLambertMaterial( { ambient: 0xffffff, map: front, side: THREE.BackSide } ),
+  new THREE.MeshLambertMaterial( { ambient: 0xffffff, map: back, side: THREE.FrontSide } )
     //new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe: true, transparent: true, opacity: 0.6, side: THREE.FrontSide } ),
     //new THREE.MeshBasicMaterial( { color: 0x00ffff, wireframe: false, transparent: false, opacity: 0.6, side: THREE.DoubleSide } ),
     //new THREE.MeshBasicMaterial( { color: 0x0000ff, wireframe: true, transparent: true, opacity: 0.6, side: THREE.FrontSide } ),
@@ -101,7 +97,7 @@ function animate() {
     requestAnimationFrame( animate );
     controls.update();
     render();
-    stats.update();
+    //stats.update();
 }
 
 function render() {
