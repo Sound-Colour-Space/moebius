@@ -76,6 +76,14 @@ gulp.task('html', function() {
   .pipe(browserSync.stream());
   });
 
+// textures
+gulp.task('textures', function() {
+  return gulp.src('./src/textures/**/*')
+  //.pipe(processhtml())f
+  .pipe(gulp.dest('build/textures'))
+  .pipe(browserSync.stream());
+  });
+
 // sass
 gulp.task('sass', function() {
   return gulp.src('./src/scss/**/*.scss')
@@ -113,4 +121,4 @@ gulp.task('serve', function() {
 );
 
 // use gulp-sequence to finish building html, sass and js before first page load
-gulp.task('default', gulpSequence(['html', 'sass', 'libs', 'js'], 'serve'));
+gulp.task('default', gulpSequence(['html', 'textures', 'sass', 'libs', 'js'], 'serve'));
